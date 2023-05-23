@@ -1,4 +1,4 @@
-# sim-wallet
+# Sim-Wallet
 
 This app represents a virtual wallet and the amount of cash I can spend. The use case is simple:
 
