@@ -1,3 +1,4 @@
+import currency from 'currency.js';
 import React, {useState} from 'react';
 
 /**
@@ -9,6 +10,16 @@ const localStorage = window.localStorage;
  * The local storage name.
  */
 const storageKey = 'spending-state';
+
+/**
+ * Formats cents value as a currency string.
+ *
+ * @param {integer} cents The value in cents.
+ * @returns {string} The currency formatted string (e.g., $99.99).
+ */
+function $(cents) {
+  return currency(cents, {fromCents: true}).format();
+}
 
 /**
  * The main app component.
@@ -82,7 +93,11 @@ export default function App() {
  */
 function Total({entries}) {
   let total = entries && entries.length > 0 ? entries[0].total : 0
-  return (<h1>${total}</h1>)
+  return (
+    <h1>
+      {$(total)}
+    </h1>
+  )
 }
 
 /**
@@ -119,12 +134,16 @@ function Entry({entry}) {
         style={{
           textAlign: 'right'
         }}
-      >{entry.value}</td>
+      >
+        {$(entry.value)}
+      </td>
       <td
         style={{
           textAlign: 'right'
         }}
-      >{entry.total}</td>
+      >
+        {$(entry.total)}
+      </td>
     </tr>
   )
 }
@@ -151,7 +170,7 @@ function Inputs({onAddEntry}) {
         type="number"
         inputMode="decimal"
         value={value}
-        onChange={event => setValue(parseFloat(event.target.value))}
+        onChange={event => setValue(event.target.value)}
         style={{
           flexGrow: '3'
         }}
@@ -159,7 +178,7 @@ function Inputs({onAddEntry}) {
 
       <button
         onClick={() => {
-          onAddEntry(value);
+          onAddEntry(currency(value).intValue);
           setValue('');
         }}
         style={{
@@ -172,7 +191,7 @@ function Inputs({onAddEntry}) {
 
       <button
         onClick={() => {
-          onAddEntry(value * -1);
+          onAddEntry(currency(value).intValue * -1);
           setValue('');
         }}
         style={{
