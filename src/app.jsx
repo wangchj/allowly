@@ -1,5 +1,14 @@
+import '@fontsource/inter';
+import Add from '@mui/icons-material/Add';
+import Button from '@mui/joy/Button';
+import Divider from '@mui/joy/Divider';
+import Stack from '@mui/joy/Stack';
+import Table from '@mui/joy/Table';
 import currency from 'currency.js';
 import React, {useState} from 'react';
+import MaxWidth from './max-width.jsx';
+import Center from './center.jsx';
+import InputModal, {openInputModal} from './input-modal.jsx';
 
 /**
  * The browser local storage object.
@@ -44,11 +53,6 @@ export default function App() {
    * @param {number} value The transaction value
    */
   function onAddEntry(value) {
-    if (!value || typeof value !== 'number')
-      return;
-
-    setError();
-
     let entries = [...state.entries];
 
     // We only keep 20 entries
@@ -77,12 +81,23 @@ export default function App() {
   }
 
   return (
-    <div>
-      {error && <div>{error}</div>}
-      <Total entries={state.entries}/>
-      <Entries entries={state.entries}/>
-      <Inputs onAddEntry={onAddEntry}/>
-    </div>
+    <Center>
+      <MaxWidth>
+        {error && <div>{error}</div>}
+
+        <Stack
+          direction="column"
+          spacing={3}
+        >
+          <Total entries={state.entries}/>
+
+          <Divider/>
+
+          <Entries entries={state.entries}/>
+        </Stack>
+        <InputModal onAddEntry={onAddEntry}/>
+      </MaxWidth>
+    </Center>
   )
 }
 
@@ -94,9 +109,23 @@ export default function App() {
 function Total({entries}) {
   let total = entries && entries.length > 0 ? entries[0].total : 0
   return (
-    <h1>
-      {$(total)}
-    </h1>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <h1>{$(total)}</h1>
+
+        <Button
+          variant="soft"
+          color="neutral"
+          startDecorator={<Add/>}
+          size="sm"
+          onClick={() => openInputModal()}
+        >
+          Add entry
+        </Button>
+      </Stack>
   )
 }
 
@@ -107,15 +136,23 @@ function Total({entries}) {
  */
 function Entries({entries}) {
   return (
-    <table
-      style={{
-        width: '100%'
-      }}
+    <Table
+      // style={{
+      //   width: '100%'
+      // }}
     >
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th style={{textAlign: 'right'}}>Amount</th>
+        <th style={{textAlign: 'right'}}>Total</th>
+      </tr>
+    </thead>
+
       <tbody>
         {entries.map(entry => <Entry entry={entry}/>)}
       </tbody>
-    </table>
+    </Table>
   )
 }
 
@@ -145,62 +182,5 @@ function Entry({entry}) {
         {$(entry.total)}
       </td>
     </tr>
-  )
-}
-
-/**
- * The component to input new transactions.
- *
- * @param {function} onAddEntry The callback for a new transaction.
- */
-function Inputs({onAddEntry}) {
-  let [value, setValue] = useState('');
-
-  return (
-    <div
-      style={{
-        marginTop: '2em',
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
-        justifyContent: 'space-around'
-      }}
-    >
-      <input
-        type="number"
-        inputMode="decimal"
-        value={value}
-        onChange={event => setValue(event.target.value)}
-        style={{
-          flexGrow: '3'
-        }}
-      />
-
-      <button
-        onClick={() => {
-          onAddEntry(currency(value).intValue);
-          setValue('');
-        }}
-        style={{
-          marginLeft: '1rem',
-          flexGrow: '1'
-        }}
-      >
-        Deposit
-      </button>
-
-      <button
-        onClick={() => {
-          onAddEntry(currency(value).intValue * -1);
-          setValue('');
-        }}
-        style={{
-          marginLeft: '1rem',
-          flexGrow: '1'
-        }}
-      >
-        Spend
-      </button>
-    </div>
   )
 }
