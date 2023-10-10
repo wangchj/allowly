@@ -39,7 +39,20 @@ function onButtonClick(sign, onAddEntry) {
     onAddEntry(intValue);
     setValue('');
     setOpen(false);
+
+    // Scroll page to top
+    window.scrollTo(0, 0);
   }
+}
+
+/**
+ * Handles modal close event.
+ */
+function onClose() {
+  setOpen(false);
+
+  // Scroll page to top
+  window.scrollTo(0, 0);
 }
 
 /**
@@ -54,7 +67,7 @@ export default function InputModal({onAddEntry}) {
   return (
     <Modal
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={onClose}
     >
       <ModalDialog>
       <Stack spacing={2}>
