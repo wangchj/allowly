@@ -1,9 +1,11 @@
 import '@fontsource/inter';
 import Add from '@mui/icons-material/Add';
 import Button from '@mui/joy/Button';
+import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
 import Stack from '@mui/joy/Stack';
 import Table from '@mui/joy/Table';
+import Typography from '@mui/joy/Typography';
 import currency from 'currency.js';
 import React, {useState} from 'react';
 import MaxWidth from './max-width.jsx';
@@ -107,14 +109,44 @@ export default function App() {
  * @param {array} entries The prop that contains the transaction entries.
  */
 function Total({entries}) {
-  let total = entries && entries.length > 0 ? entries[0].total : 0
+  // Total value
+  let total = entries && entries.length > 0 ? entries[0].total : 0;
+
+  // The total value as a string
+  let totalStr = currency(Math.abs(total), {fromCents: true, symbol: ''}).format();
+
+  // Is total negative?
+  let negative = total < 0;
+
   return (
       <Stack
         direction="column"
         justifyContent="center"
         alignItems="center"
       >
-        <h1>{$(total)}</h1>
+        <Typography
+          sx={{
+            fontSize: '3.5rem',
+            fontWeight: 'normal',
+            mt: 1,
+            mb: 2
+          }}
+          startDecorator={
+            <Typography
+              textColor={negative ? 'danger': "text.secondary"}
+              sx={{
+                fontSize: '1.7rem',
+                position: 'relative',
+                top: '-0.5rem'
+              }}
+            >
+              {negative &&<span>-</span>} $
+            </Typography>
+          }
+          color={negative ? 'danger' : ''}
+        >
+          {totalStr}
+        </Typography>
 
         <Button
           variant="soft"
@@ -150,7 +182,7 @@ function Entries({entries}) {
     </thead>
 
       <tbody>
-        {entries.map(entry => <Entry entry={entry}/>)}
+        {entries.map((entry, index) => <Entry key={index} entry={entry}/>)}
       </tbody>
     </Table>
   )
