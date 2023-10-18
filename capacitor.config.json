@@ -4,5 +4,6 @@
   "webDir": "docs",
   "server": {
     "androidScheme": "https"
-  }
+  },
+  "backgroundColor": "#FFFFFF"
 }
