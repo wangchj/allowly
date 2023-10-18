@@ -1,0 +1,8 @@
+{
+  "appId": "app.allowly",
+  "appName": "allowly",
+  "webDir": "docs",
+  "server": {
+    "androidScheme": "https"
+  }
+}

@@ -1,7 +1,7 @@
 import '@fontsource/inter';
+import './app.scss';
 import Add from '@mui/icons-material/Add';
 import Button from '@mui/joy/Button';
-import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
 import Stack from '@mui/joy/Stack';
 import Table from '@mui/joy/Table';
@@ -83,23 +83,25 @@ export default function App() {
   }
 
   return (
-    <Center>
-      <MaxWidth>
-        {error && <div>{error}</div>}
+    <div className="safe-area">
+      <Center>
+        <MaxWidth>
+          {error && <div>{error}</div>}
 
-        <Stack
-          direction="column"
-          spacing={3}
-        >
-          <Total entries={state.entries}/>
+          <Stack
+            direction="column"
+            spacing={3}
+          >
+            <Total entries={state.entries}/>
 
-          <Divider/>
+            <Divider/>
 
-          <Entries entries={state.entries}/>
-        </Stack>
-        <InputModal onAddEntry={onAddEntry}/>
-      </MaxWidth>
-    </Center>
+            <Entries entries={state.entries}/>
+          </Stack>
+          <InputModal onAddEntry={onAddEntry}/>
+        </MaxWidth>
+      </Center>
+    </div>
   )
 }
 
