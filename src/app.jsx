@@ -130,8 +130,8 @@ function Total({entries}) {
           sx={{
             fontSize: '3.5rem',
             fontWeight: 'normal',
-            mt: 1,
-            mb: 2
+            mt: 2,
+            mb: 2.5
           }}
           startDecorator={
             <Typography
