@@ -1,10 +1,10 @@
-# Sim-Wallet
+# Allowly
 
-This app represents a virtual wallet and the amount of cash I can spend. The use case is simple:
+A cross-platform app for keeping track of spending allowance. The use case is simple:
 
-- When I complete a task of value, I'll deposit a certain amount into the virtual wallet.
-- When I make a purchase, I'll deduct the amount of the purchase from the virtual wallet.
-- The amount in the wallet is what I can spend in real life.
+- When I complete a task of value, I'll add to my allowance in the app
+- When I make a purchase, I'll deduct fro my allowance in the app
+- The amount in the app is what I can spend in real life.
 
 The goal is to motivate myself to complete certain tasks.
 
@@ -13,13 +13,13 @@ bulky cash and change with me.
 
 # Using the app
 
-The app can be found at https://wangchj.github.io/sim-wallet
+The app can be found at https://wangchj.github.io/allowly
 
 The app only has static asset files (1 html, and 1 JS file). There are no backend servers. The app
 stores all the data in browser local storage; so all of your data is stored on your device. However,
 Internet is required to use the app in order to get the assets.
 
-# Bulding the app
+# Building the app
 
 If you want to host the static assets yourself somewhere else, it's really simple to do:
 
