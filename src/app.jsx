@@ -33,6 +33,24 @@ function $(cents) {
 }
 
 /**
+ * Formats entry date/time to display.
+ *
+ * @param {string} s The entry datetime string.
+ * @return {string} The date string.
+ */
+function formatTime(s) {
+  return (new Date(s)).toLocaleString(
+    'en-us',
+    {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit'
+    }
+  )
+}
+
+/**
  * The main app component.
  */
 export default function App() {
@@ -177,7 +195,7 @@ function Entries({entries}) {
     >
     <thead>
       <tr>
-        <th>Date</th>
+        <th>Time</th>
         <th style={{textAlign: 'right'}}>Amount</th>
         <th style={{textAlign: 'right'}}>Total</th>
       </tr>
@@ -199,7 +217,7 @@ function Entry({entry}) {
   return (
     <tr>
       <td>
-        {(new Date(entry.time)).toLocaleString('en-us', {dateStyle: 'full'})}
+        {formatTime(entry.time)}
       </td>
       <td
         style={{
