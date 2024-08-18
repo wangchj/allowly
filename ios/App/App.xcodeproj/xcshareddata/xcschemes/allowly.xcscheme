@@ -46,9 +46,18 @@
             BlueprintIdentifier = "504EC3031FED79650016851F"
             BuildableName = "allowly.app"
             BlueprintName = "allowly"
-            ReferencedContainer = "container:allowly.xcodeproj">
+            ReferencedContainer = "container:App.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "504EC3031FED79650016851F"
+            BuildableName = "allowly.app"
+            BlueprintName = "allowly"
+            ReferencedContainer = "container:allowly.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -66,6 +75,15 @@
             ReferencedContainer = "container:allowly.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "504EC3031FED79650016851F"
+            BuildableName = "allowly.app"
+            BlueprintName = "allowly"
+            ReferencedContainer = "container:allowly.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
