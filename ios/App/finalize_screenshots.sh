@@ -9,6 +9,7 @@ BG_COLOR=#F0F0F0
 # Output directory
 DIR=screenshots
 
+
 # iPhone 5.5"
 
 magick -size 1242x2208 xc:$BG_COLOR $DIR/iPhone_5.5_bg.png
@@ -27,6 +28,7 @@ magick \
   $DIR/iPhone_5.5_final.png
 
 rm $DIR/iPhone_5.5_bg.png $DIR/iPhone_5.5_resized.png
+
 
 
 # iPhone 6.7"
@@ -49,24 +51,45 @@ magick \
 rm $DIR/iPhone_6.7_bg.png $DIR/iPhone_6.7_resized.png
 
 
-# # iPad 13"
 
-# magick -size 2048x2732 xc:$BG_COLOR $DIR/iPad_13_bg.png
+# iPad 13"
 
-# magick \
-#   'screenshots/en-US/iPhone 15 Pro Max-MainScreen_framed.png' \
-#   -resize 2048x2732 \
-#   $DIR/iPad_13_resized.png
+# Make background image that is the same size as the frame image.
+magick -size 2448x3132 xc:$BG_COLOR $DIR/iPad_13_bg.png
 
-# magick \
-#   $DIR/iPad_13_bg.png \
-#   -colorspace sRGB \
-#   $DIR/iPad_13_resized.png \
-#   -gravity center \
-#   -composite \
-#   $DIR/iPad_13_final.png
 
-# rm $DIR/iPad_13_bg.png $DIR/iPad_13_resized.png
+# Resizing because the screenshot from the simulator is slightly larger than the frame content area.
+#
+# screenshot: 2064 x 2752
+# Frame content area: 2048 x 2732
+magick \
+  './screenshots/en-US/iPad Pro 13-inch (M4)-MainScreen.png' \
+  -resize 2048x2732 \
+  $DIR/ipad_13_resized.png
+
+
+# Make the screenshot the same size as the frame image.
+magick \
+  $DIR/iPad_13_bg.png \
+  -colorspace sRGB \
+  $DIR/ipad_13_resized.png \
+  -gravity center \
+  -composite \
+  $DIR/ipad_13_padded.png
+
+# Overlay the frame image on top of the screenshot to produce the final image.
+magick \
+  $DIR/ipad_13_padded.png \
+  './frames/ipad_pro_13.png' \
+  -gravity center \
+  -composite \
+  $DIR/ipad_13_final.png
+
+
+# Delete temporary images
+rm $DIR/iPad_13_bg.png \
+   $DIR/ipad_13_resized.png \
+   $DIR/ipad_13_padded.png
 
 
 # # iPad 12.9"
