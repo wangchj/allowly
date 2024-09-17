@@ -30,7 +30,6 @@ magick \
 rm $DIR/iPhone_5.5_bg.png $DIR/iPhone_5.5_resized.png
 
 
-
 # iPhone 6.7"
 
 magick -size 1290x2796 xc:$BG_COLOR $DIR/iPhone_6.7_bg.png
@@ -49,7 +48,6 @@ magick \
   $DIR/iPhone_6.7_final.png
 
 rm $DIR/iPhone_6.7_bg.png $DIR/iPhone_6.7_resized.png
-
 
 
 # iPad 13"
@@ -109,21 +107,48 @@ rm $DIR/iPad_13_bg.png \
    $DIR/ipad_13_resized_2.png
 
 
-# # iPad 12.9"
+# iPad 12.9"
 
-# magick -size 2048x2732 xc:$BG_COLOR $DIR/iPad_12.9_bg.png
+# Make background image that is the same size as the frame image.
+magick -size 2326x3100 xc:$BG_COLOR $DIR/iPad_12_9_bg.png
 
-# magick \
-#   'screenshots/en-US/iPhone 15 Pro Max-MainScreen_framed.png' \
-#   -resize 2048x2732 \
-#   $DIR/iPad_12.9_resized.png
+# Make the screenshot the same size as the frame image.
+magick \
+  $DIR/iPad_12_9_bg.png \
+  -colorspace sRGB \
+  './screenshots/en-US/iPad Pro (12.9-inch) (2nd generation)-MainScreen.png' \
+  -gravity center \
+  -composite \
+  $DIR/ipad_12_9_padded.png
 
-# magick \
-#   $DIR/iPad_12.9_bg.png \
-#   -colorspace sRGB \
-#   $DIR/iPad_12.9_resized.png \
-#   -gravity center \
-#   -composite \
-#   $DIR/iPad_12.9_final.png
+# Overlay the frame image on top of the screenshot to produce the framed image.
+magick \
+  $DIR/ipad_12_9_padded.png \
+  './frames/ipad_pro_12.9_2nd_gen.png' \
+  -gravity center \
+  -composite \
+  $DIR/ipad_12_9_framed.png
 
-# rm $DIR/iPad_12.9_bg.png $DIR/iPad_12.9_resized.png
+# Resize to fit App Store canvas
+magick \
+  $DIR/ipad_12_9_framed.png \
+  -resize 2048x2732 \
+  $DIR/ipad_12_9_resized.png
+
+# Create background image that is the same size as canvas
+magick -size 2048x2732 xc:$BG_COLOR $DIR/iPad_12_9_bg.png
+
+# Make the final image
+magick \
+  $DIR/iPad_12_9_bg.png \
+  -colorspace sRGB \
+  $DIR/ipad_12_9_resized.png \
+  -gravity center \
+  -composite \
+  $DIR/ipad_12_9_final.png
+
+# Delete temporary images
+rm $DIR/iPad_12_9_bg.png \
+   $DIR/ipad_12_9_padded.png \
+   $DIR/ipad_12_9_framed.png \
+   $DIR/ipad_12_9_resized.png
