@@ -1,6 +1,7 @@
+import Add from '@mui/icons-material/Add';
+import Remove from '@mui/icons-material/Remove';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
@@ -104,8 +105,9 @@ export default function InputModal({onAddEntry}) {
             <Button
               style={{
                 flexGrow: 1,
-                flexBasis: '20%'
+                flexBasis: '50%'
               }}
+              startDecorator={<Add />}
               onClick={() => onButtonClick(1, onAddEntry)}
             >
               Add
@@ -114,8 +116,10 @@ export default function InputModal({onAddEntry}) {
             <Button
               style={{
                 flexGrow: 1,
-                flexBasis: '20%'
+                flexBasis: '50%'
               }}
+              startDecorator={<Remove />}
+              color="danger"
               onClick={() => onButtonClick(-1, onAddEntry)}
             >
               Spend
