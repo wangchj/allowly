@@ -89,7 +89,6 @@ export default function InputModal({onAddEntry}) {
 
         <Stack spacing={2}>
           <FormControl>
-            {/* <FormLabel>Amount</FormLabel> */}
             <Input
               type="number"
               inputMode="decimal"
@@ -107,10 +106,9 @@ export default function InputModal({onAddEntry}) {
                 flexGrow: 1,
                 flexBasis: '50%'
               }}
-              startDecorator={<Add />}
               onClick={() => onButtonClick(1, onAddEntry)}
             >
-              Add
+              <Add/>
             </Button>
 
             <Button
@@ -118,11 +116,10 @@ export default function InputModal({onAddEntry}) {
                 flexGrow: 1,
                 flexBasis: '50%'
               }}
-              startDecorator={<Remove />}
               color="danger"
               onClick={() => onButtonClick(-1, onAddEntry)}
             >
-              Spend
+              <Remove/>
             </Button>
           </Stack>
         </Stack>
