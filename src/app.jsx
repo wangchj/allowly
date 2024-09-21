@@ -8,6 +8,7 @@ import Table from '@mui/joy/Table';
 import Typography from '@mui/joy/Typography';
 import currency from 'currency.js';
 import React, {useState} from 'react';
+import formatDateTime from './format-time.js';
 import MaxWidth from './max-width.jsx';
 import Center from './center.jsx';
 import InputModal, {openInputModal} from './input-modal.jsx';
@@ -30,24 +31,6 @@ const storageKey = 'spending-state';
  */
 function $(cents) {
   return currency(cents, {fromCents: true}).format();
-}
-
-/**
- * Formats entry date/time to display.
- *
- * @param {string} s The entry datetime string.
- * @return {string} The date string.
- */
-function formatTime(s) {
-  return (new Date(s)).toLocaleString(
-    'en-us',
-    {
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit'
-    }
-  )
 }
 
 /**
@@ -217,7 +200,7 @@ function Entry({entry}) {
   return (
     <tr>
       <td>
-        {formatTime(entry.time)}
+        {formatDateTime(entry.time)}
       </td>
       <td
         style={{
