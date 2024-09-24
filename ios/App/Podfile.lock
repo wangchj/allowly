@@ -1,8 +1,8 @@
 PODS:
-  - Capacitor (5.5.0):
+  - Capacitor (6.1.2):
     - CapacitorCordova
-  - CapacitorCordova (5.5.0)
-  - CapacitorIosEnableScrollBounce (0.0.1):
+  - CapacitorCordova (6.1.2)
+  - CapacitorIosEnableScrollBounce (0.0.2):
     - Capacitor
 
 DEPENDENCIES:
@@ -19,9 +19,9 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/capacitor-ios-enable-scroll-bounce"
 
 SPEC CHECKSUMS:
-  Capacitor: 57890b363df14d5d2d5d8461aa23e886cb34da2a
-  CapacitorCordova: 3d3908a3d208a11a75f9df3b18c4405c4de76e1d
-  CapacitorIosEnableScrollBounce: 5662e3f897977a2a6c3a8ab7777118aabbec0057
+  Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
+  CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
+  CapacitorIosEnableScrollBounce: f08d19b5a65d8c3af2c7731f1a7bc27ecaf9c2d9
 
 PODFILE CHECKSUM: aa0d29c4e108946b90d70cdf35049dff08cdbe24
 
