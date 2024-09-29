@@ -1,5 +1,6 @@
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
+import Alert from '@mui/joy/Alert';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import Input from '@mui/joy/Input';
@@ -10,6 +11,12 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import currency from 'currency.js';
 import React, {useState} from 'react';
+import addEntry from 'modules/add-entry';
+
+/**
+ * The current entries passed in from the component that opened this model.
+ */
+let entries;
 
 /**
  * The input value as a string.
@@ -22,9 +29,17 @@ let value, setValue;
 let open, setOpen;
 
 /**
- * Opens this modal.
+ * The error message shown on the UI.
  */
-export function openInputModal() {
+let error, setError;
+
+/**
+ * Opens this modal.
+ *
+ * @param {array} _entries The current entries.
+ */
+export function openInputModal(_entries) {
+  entries = _entries
   setOpen(true);
 }
 
@@ -32,17 +47,30 @@ export function openInputModal() {
  * Handles click event for Add or Spend button.
  *
  * @param {integer} sign This must be 1 or -1
+ * @param {function} onEntryAdded The callback function after a new entry has been added.
  */
-function onButtonClick(sign, onAddEntry) {
+async function onButtonClick(sign, onEntryAdded) {
   let intValue = currency(value).intValue * sign;
 
   if (intValue && typeof intValue === 'number') {
-    onAddEntry(intValue);
-    setValue('');
-    setOpen(false);
 
-    // Scroll page to top
-    window.scrollTo(0, 0);
+    try {
+      // Add the new entry
+      const res = await addEntry(entries, intValue);
+
+      // Notify the parent a new entry has been added
+      onEntryAdded(res);
+
+      // Reset modal input
+      setValue('');
+      setOpen(false);
+
+      // Scroll page to top
+      window.scrollTo(0, 0);
+    }
+    catch (error) {
+      setError(error.message ?? JSON.stringify(error));
+    }
   }
 }
 
@@ -59,11 +87,12 @@ function onClose() {
 /**
  * The input modal UI component.
  *
- * @param {function} onAddEntry The callback to add a new entry.
+ * @param {function} onEntryAdded The callback function after a new entry has been added.
  */
-export default function InputModal({onAddEntry}) {
+export default function InputModal({onEntryAdded}) {
   [value, setValue] = useState('');
   [open, setOpen] = useState(false);
+  [error, setError] = useState();
 
   return (
     <Modal
@@ -100,13 +129,15 @@ export default function InputModal({onAddEntry}) {
             />
           </FormControl>
 
+          {error && <Alert color="danger">{error}</Alert>}
+
           <Stack direction="row" spacing={2}>
             <Button
               style={{
                 flexGrow: 1,
                 flexBasis: '50%'
               }}
-              onClick={() => onButtonClick(1, onAddEntry)}
+              onClick={() => onButtonClick(1, onEntryAdded)}
             >
               <Add/>
             </Button>
@@ -117,7 +148,7 @@ export default function InputModal({onAddEntry}) {
                 flexBasis: '50%'
               }}
               color="danger"
-              onClick={() => onButtonClick(-1, onAddEntry)}
+              onClick={() => onButtonClick(-1, onEntryAdded)}
             >
               <Remove/>
             </Button>

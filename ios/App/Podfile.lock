@@ -4,11 +4,14 @@ PODS:
   - CapacitorCordova (6.1.2)
   - CapacitorIosEnableScrollBounce (0.0.2):
     - Capacitor
+  - CapacitorPreferences (6.0.2):
+    - Capacitor
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - CapacitorIosEnableScrollBounce (from `../../node_modules/capacitor-ios-enable-scroll-bounce`)
+  - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -17,12 +20,15 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorIosEnableScrollBounce:
     :path: "../../node_modules/capacitor-ios-enable-scroll-bounce"
+  CapacitorPreferences:
+    :path: "../../node_modules/@capacitor/preferences"
 
 SPEC CHECKSUMS:
   Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
   CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
   CapacitorIosEnableScrollBounce: f08d19b5a65d8c3af2c7731f1a7bc27ecaf9c2d9
+  CapacitorPreferences: e8284bf740cf8c6d3f25409af3c01df87dfeb5a1
 
-PODFILE CHECKSUM: aa0d29c4e108946b90d70cdf35049dff08cdbe24
+PODFILE CHECKSUM: 8206eac9a769265ae611b7d9cf6d17f2103afe7f
 
 COCOAPODS: 1.15.2
