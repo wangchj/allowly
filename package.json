@@ -41,6 +41,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "devDependencies": {
-    "@capacitor/cli": "^6.0.0"
+    "@capacitor/cli": "^6.0.0",
+    "shelljs": "^0.8.5"
   }
 }

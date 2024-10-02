@@ -27,5 +27,16 @@ If you want to host the static assets yourself somewhere else, it's really simpl
 1. In the directory of the repo, run `npx webpack`. This will produce the assets in `docs/`
 1. Upload the content of the `docs/` directory to your host (e.g., GitHub, S3, etc).
 
+# Making screenshots for iOS App Store
+
+When uploading a new version to Apple iOS App Store, we may also need to update the screenshots to
+show the changes. This section describe how to make the screenshots.
+
+The screenshot process is simple since we have an automated script to do that:
+
+```bash
+node scripts/make-screenshots.js
+```
+
 # License
 This project is licensed under the MIT License.

@@ -31,4 +31,4 @@ while (date < now) {
 
 addEntry(now);
 
-console.log(JSON.stringify({entries:res}));
+console.log(JSON.stringify(res));

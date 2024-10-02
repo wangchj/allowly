@@ -33,6 +33,12 @@ final class screenshotUITests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
         let app = XCUIApplication()
+        
+        // Wait for the UI to complete loading
+        sleep(2)
+        
+        snapshot("main")
+        
         app.webViews.webViews.webViews/*@START_MENU_TOKEN@*/.buttons["Add entry"]/*[[".otherElements[\"Allowly\"].buttons[\"Add entry\"]",".buttons[\"Add entry\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         
 //        let key = app/*@START_MENU_TOKEN@*/.keys["2"]/*[[".keyboards.keys[\"2\"]",".keys[\"2\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
@@ -43,6 +49,6 @@ final class screenshotUITests: XCTestCase {
         app/*@START_MENU_TOKEN@*/.keys["2"]/*[[".keyboards.keys[\"2\"]",".keys[\"2\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         app/*@START_MENU_TOKEN@*/.keys["0"]/*[[".keyboards.keys[\"0\"]",".keys[\"0\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         
-        snapshot("MainScreen")
+        snapshot("add-entry")
     }
 }

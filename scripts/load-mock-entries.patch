@@ -1,0 +1,18 @@
+diff --git a/src/modules/load-entries.js b/src/modules/load-entries.js
+index f756dd1..64daad4 100644
+--- a/src/modules/load-entries.js
++++ b/src/modules/load-entries.js
+@@ -1,11 +1,9 @@
+-import { Preferences } from "@capacitor/preferences";
+-
+ /**
+  * Loads entries.
+  *
+  * @returns {array} The entries.
+  */
+ export default async function loadEntries() {
+-  let value = (await Preferences.get({key: 'entries'})).value;
+-  return value ? JSON.parse(value) : [];
++  let module = await import('../../build/mock-entries.json');
++  return module.default;
+ }
