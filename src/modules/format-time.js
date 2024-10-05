@@ -1,5 +1,8 @@
 import capitalize from 'capitalize';
 import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+
+dayjs.extend(isSameOrAfter);
 
 /**
  * Relative time format object.
@@ -54,7 +57,7 @@ function formatDate(date) {
   else if(isYesterday(date)) {
     return capitalize(rtf.format(-1, 'day'));
   }
-  else if (sameWeek(date)){
+  else if (within6Days(date)){
     return weekdayFormat.format(date);
   }
   else {
@@ -101,11 +104,11 @@ function isYesterday(date) {
 }
 
 /**
- * Determine if specified time and now are in the same week.
+ * Determine if specified time is within past 6 days.
  *
  * @param {number} time The timestamp to compare.
- * @return {boolean} True if same week; false otherwise.
+ * @return {boolean} True if within 6 days; false otherwise.
  */
-function sameWeek(time) {
-  return dayjs(time).startOf('week').isSame(dayjs().startOf('week'));
+function within6Days(time) {
+  return dayjs(time).isSameOrAfter(dayjs().startOf('day').subtract(6, 'day'));
 }
