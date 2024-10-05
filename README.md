@@ -11,13 +11,12 @@ The goal is to motivate myself to complete certain tasks.
 You may ask, why not just use real cash in a real wallet? The answer is I don't like to carry
 bulky cash and change with me.
 
-# Using the app
+# Data storage and privacy
 
-The app can be found at https://wangchj.github.io/allowly
+The app stores all data locally in app preferences. The app does not call any remote APIs and does
+not require network connection to work once the app is install.
 
-The app only has static asset files (1 html, and 1 JS file). There are no backend servers. The app
-stores all the data in browser local storage; so all of your data is stored on your device. However,
-Internet is required to use the app in order to get the assets.
+The data is erased after the app is uninstalled.
 
 # Building the app
 
