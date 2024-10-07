@@ -26,7 +26,7 @@ export default async function addEntry(entries, value) {
   await Preferences.set({
     key: 'entries',
     value: JSON.stringify(res)
-  })
+  });
 
   return res;
 }

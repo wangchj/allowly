@@ -33,8 +33,9 @@ export default function Total({entries, onEntryAdded}) {
           sx={{
             fontSize: '3.5rem',
             fontWeight: 'normal',
-            mt: 2,
-            mb: 2.5
+            mt: 0,
+            mb: 2.5,
+            lineHeight: '1' // The default line-height of 1.5 has too much top padding
           }}
           startDecorator={
             <Typography

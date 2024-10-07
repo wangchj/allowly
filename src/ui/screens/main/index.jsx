@@ -1,14 +1,18 @@
 import '@fontsource/inter';
-import './app.scss';
+import Alert from '@mui/joy/Alert';
 import Divider from '@mui/joy/Divider';
 import Stack from '@mui/joy/Stack';
 import React, {useEffect, useState} from 'react';
-import MaxWidth from './max-width.jsx';
-import Center from './center.jsx';
+import { useLocation } from 'react-router-dom';
 import Entries from './entries.jsx';
-import PageLoading from './page-loading';
+import PageLoading from 'ui/layout/page-loading.jsx';
 import Total from './total.jsx';
 import loadEntries from 'modules/load-entries.js';
+
+/**
+ * React router location object.
+ */
+let location;
 
 /**
  * The entries data.
@@ -43,44 +47,41 @@ async function init() {
 }
 
 /**
- * The main app component.
+ * The main screen component.
  */
-export default function App() {
+export default function Main() {
   [entries, setEntries] = useState([]);
   [loading, setLoading] = useState(true);
   [error, setError] = useState();
+  location = useLocation();
 
   /**
    * Loads the data.
    */
-  useEffect(() => {
+  useEffect(() => {console.log('main screen useEffect');
     init();
-  }, []);
+  }, [location]);
 
   return (
-    <div className="safe-area">
-      <Center>
-        <MaxWidth>
-          {error && <div>{error}</div>}
+    <div>
+      {error && <Alert color="danger">{error}</Alert>}
 
-          {loading && <PageLoading/>}
+      {loading && <PageLoading/>}
 
-          {!loading && (
-            <>
-              <Stack
-                direction="column"
-                spacing={3}
-              >
-                <Total entries={entries} onEntryAdded={newEntries => setEntries(newEntries)}/>
+      {!loading && (
+        <>
+          <Stack
+            direction="column"
+            spacing={3}
+          >
+            <Total entries={entries} onEntryAdded={newEntries => setEntries(newEntries)}/>
 
-                <Divider/>
+            <Divider/>
 
-                <Entries entries={entries}/>
-              </Stack>
-            </>
-          )}
-        </MaxWidth>
-      </Center>
+            <Entries entries={entries}/>
+          </Stack>
+        </>
+      )}
     </div>
   )
 }

@@ -8,8 +8,6 @@ import Entry from './entry.jsx';
  * @param {array} entries The prop that contains the transaction entries.
  */
 export default function Entries({entries}) {
-
-  console.log('entries', entries);
   return (
     <Table>
     <thead>

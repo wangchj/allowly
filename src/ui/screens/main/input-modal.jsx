@@ -120,7 +120,7 @@ export default function InputModal({onEntryAdded}) {
           <FormControl>
             <Input
               type="number"
-              inputMode="decimal"
+              inputmode="decimal"
               startDecorator="$"
               value={value}
               onChange={event => setValue(event.target.value)}
