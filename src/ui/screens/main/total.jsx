@@ -1,23 +1,31 @@
-import Add from '@mui/icons-material/Add';
 import Button from '@mui/joy/Button';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
-import currency from 'currency.js';
 import React from 'react';
 import InputModal, {openInputModal} from './input-modal.jsx';
+import { format, getSymbol, getSymbolPlacement } from 'modules/currency';
 
 /**
  * The UI component that shows the total amount.
  *
  * @param {array} entries The prop that contains the entries.
+ * @param {object} currencyConfig The currency settings object.
+ * @param {object} customCurrency The custom currency settings object.
  * @param {function} onEntryAdded The callback function after a new entry has been added.
  */
-export default function Total({entries, onEntryAdded}) {
+export default function Total({entries, currencyConfig, customCurrency, onEntryAdded}) {
   // Total value
   let total = entries && entries.length > 0 ? entries[0].total : 0;
 
+  // Currency symbol
+  let symbol = currencyConfig.type === 'standard' ? getSymbol(currencyConfig.code) :
+    customCurrency.symbol;
+
+  // The currency symbol placement
+  let symbolPlacement = getSymbolPlacement();
+
   // The total value as a string
-  let totalStr = currency(Math.abs(total), {fromCents: true, symbol: ''}).format();
+  let totalStr = format(Math.abs(total), currencyConfig, customCurrency).replace(symbol, '');
 
   // Is total negative?
   let negative = total < 0;
@@ -46,9 +54,19 @@ export default function Total({entries, onEntryAdded}) {
                 top: '-0.5rem'
               }}
             >
-              {negative &&<span>-</span>} $
+              {negative &&<span>-</span>}{symbolPlacement === 'before' ? <span> {symbol}</span>: null}
             </Typography>
           }
+          endDecorator={symbolPlacement === 'after' && (
+            <Typography
+              textColor={negative ? 'danger': "text.secondary"}
+              sx={{
+                fontSize: '1.7rem',
+                position: 'relative',
+                top: '-0.5rem'
+              }}
+            >{symbol}</Typography>
+          )}
           color={negative ? 'danger' : ''}
         >
           {totalStr}
@@ -57,7 +75,6 @@ export default function Total({entries, onEntryAdded}) {
         <Button
           variant="soft"
           color="neutral"
-          startDecorator={<Add/>}
           size="sm"
           onClick={() => openInputModal(entries)}
         >
@@ -65,7 +82,10 @@ export default function Total({entries, onEntryAdded}) {
         </Button>
       </Stack>
 
-      <InputModal onEntryAdded={onEntryAdded}/>
+      <InputModal
+        symbol={symbol}
+        onEntryAdded={onEntryAdded}
+      />
     </>
   )
 }

@@ -50,7 +50,7 @@ export function openInputModal(_entries) {
  * @param {function} onEntryAdded The callback function after a new entry has been added.
  */
 async function onButtonClick(sign, onEntryAdded) {
-  let intValue = currency(value).intValue * sign;
+  let intValue = currency(value, {precision: 4}).intValue * sign;
 
   if (intValue && typeof intValue === 'number') {
 
@@ -87,9 +87,10 @@ function onClose() {
 /**
  * The input modal UI component.
  *
+ * @param {string} symbol The currency symbol.
  * @param {function} onEntryAdded The callback function after a new entry has been added.
  */
-export default function InputModal({onEntryAdded}) {
+export default function InputModal({symbol, onEntryAdded}) {
   [value, setValue] = useState('');
   [open, setOpen] = useState(false);
   [error, setError] = useState();
@@ -120,8 +121,8 @@ export default function InputModal({onEntryAdded}) {
           <FormControl>
             <Input
               type="number"
-              inputmode="decimal"
-              startDecorator="$"
+              inputMode="decimal"
+              startDecorator={symbol}
               value={value}
               onChange={event => setValue(event.target.value)}
               autoFocus
