@@ -1,4 +1,14 @@
-import '@fontsource/inter';
+// import '@fontsource/inter';
+import { menuOutline } from 'ionicons/icons'
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonPage,
+  IonToolbar
+} from '@ionic/react';
 import Alert from '@mui/joy/Alert';
 import Divider from '@mui/joy/Divider';
 import Stack from '@mui/joy/Stack';
@@ -7,17 +17,23 @@ import { useLocation } from 'react-router-dom';
 import Entries from './entries.jsx';
 import PageLoading from 'ui/layout/page-loading.jsx';
 import Total from './total.jsx';
+import { loadCustomCurrency, loadCurrencyConfig } from 'modules/currency';
 import loadEntries from 'modules/load-entries.js';
-
-/**
- * React router location object.
- */
-let location;
 
 /**
  * The entries data.
  */
 let entries, setEntries;
+
+/**
+ * The currency settings object.
+ */
+let currencyConfig, setCurrencyConfig;
+
+/**
+ * The custom currency settings object.
+ */
+let customCurrency, setCustomCurrency;
 
 /**
  * Determines if the app is loading data.
@@ -33,14 +49,16 @@ let error, setError;
  * Loads the app data from Preferences API.
  */
 async function init() {
-  setError();
   setLoading(true);
+  setError();
 
   try {
-    setEntries(await loadEntries())
+    setEntries(await loadEntries());
+    setCustomCurrency(await loadCustomCurrency());
+    setCurrencyConfig(await loadCurrencyConfig());
   }
   catch (error) {
-    setError(JSON.stringify(error));
+    setError(`${error.name}: ${error.message} ${error.stack}`);
   }
 
   setLoading(false);
@@ -50,38 +68,67 @@ async function init() {
  * The main screen component.
  */
 export default function Main() {
+  const location = useLocation();
+
   [entries, setEntries] = useState([]);
+  [currencyConfig, setCurrencyConfig] = useState();
+  [customCurrency, setCustomCurrency] = useState();
   [loading, setLoading] = useState(true);
   [error, setError] = useState();
-  location = useLocation();
 
   /**
    * Loads the data.
    */
-  useEffect(() => {console.log('main screen useEffect');
+  useEffect(() => {
     init();
   }, [location]);
 
   return (
-    <div>
-      {error && <Alert color="danger">{error}</Alert>}
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonButton
+              aria-label="menu-button"
+              role="button"
+              routerLink="/settings"
+              routerDirection="forward"
+              color="dark"
+            >
+              <IonIcon icon={menuOutline} size="large"/>
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        {error && <Alert color="danger">{error}</Alert>}
 
-      {loading && <PageLoading/>}
+        {loading && <PageLoading/>}
 
-      {!loading && (
-        <>
-          <Stack
-            direction="column"
-            spacing={3}
-          >
-            <Total entries={entries} onEntryAdded={newEntries => setEntries(newEntries)}/>
+        {!loading && (
+          <>
+            <Stack
+              direction="column"
+              spacing={3}
+            >
+              <Total
+                entries={entries}
+                currencyConfig={currencyConfig}
+                customCurrency={customCurrency}
+                onEntryAdded={newEntries => setEntries(newEntries)}
+              />
 
-            <Divider/>
+              <Divider/>
 
-            <Entries entries={entries}/>
-          </Stack>
-        </>
-      )}
-    </div>
+              <Entries
+                entries={entries}
+                currencyConfig={currencyConfig}
+                customCurrency={customCurrency}
+              />
+            </Stack>
+          </>
+        )}
+      </IonContent>
+    </IonPage>
   )
 }

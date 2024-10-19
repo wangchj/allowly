@@ -1,4 +1,5 @@
 import { Preferences } from "@capacitor/preferences";
+import * as Storage from 'modules/storage';
 
 /**
  * Adds a new entry to existing entries and flushes the updated entries to storage.
@@ -23,10 +24,7 @@ export default async function addEntry(entries, value) {
   });
 
   // Save the updated entries
-  await Preferences.set({
-    key: 'entries',
-    value: JSON.stringify(res)
-  });
+  Storage.set('entries', res);
 
   return res;
 }

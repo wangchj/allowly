@@ -1,35 +1,148 @@
-// import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Button from '@mui/joy/Button';
-import Card from '@mui/joy/Card';
-import Divider from '@mui/joy/Divider';
-import IconButton from '@mui/joy/IconButton';
-import Stack from '@mui/joy/Stack';
-import Table from '@mui/joy/Table';
-import Typography from '@mui/joy/Typography';
+import {
+  IonBackButton,
+  IonButtons,
+  IonCard,
+  IonCardContent,
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonPage,
+  IonSpinner,
+  IonTitle,
+  IonToolbar
+} from '@ionic/react';
 import React, {useEffect, useState} from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import Currency from './currency';
-// import {list} from 'api/aces.js';
-// import DeleteAceModal, {openDeleteAceModal} from 'components/ace/delete-ace-modal.jsx'
-// import NewAceModal, {openNewAceModal} from 'components/ace/new-ace-modal.jsx'
-// import DeleteModal, {openDeleteModal} from 'components/habit/delete-modal.jsx'
-// import UpdateHabitModal, {openUpdateHabitModal} from 'components/habit/update-modal.jsx';
-// import Error from 'components/widgets/error.jsx';
-// import PageSpinner from 'components/widgets/page-spinner.jsx';
+import { useHistory } from 'react-router-dom';
+import { loadCustomCurrency, loadCurrencyConfig } from 'modules/currency';
+import clearEntries from 'modules/clear-entries';
+import { CurrencyModal, openCurrencyModal } from './currency-modal';
 
 /**
  * The settings screen main UI component.
  */
 export default function Settings() {
+  const history = useHistory();
+
+  /**
+   * The currency setting object.
+   */
+  const [currencyConfig, setCurrencyConfig] = useState();
+
+  /**
+   * The custom currency settings object.
+   */
+  const [customCurrency, setCustomCurrency] = useState();
+
+  /**
+   * Loading currency settings form storage.
+   */
+  const [loading, setLoading] = useState(true);
+
+  /**
+   * The error message to show on the UI.
+   */
+  const [error, setError] = useState();
+
+  /**
+   * Inits the page.
+   */
+  useEffect(() => {
+    loadCurrencySettings();
+  }, []);
+
+  /**
+   * Loads currency settings from storage.
+   */
+  async function loadCurrencySettings() {
+    setLoading(true);
+    setError();
+
+    try {
+      setCurrencyConfig(await loadCurrencyConfig());
+      setCustomCurrency(await loadCustomCurrency());
+    }
+    catch (error) {
+      setError(JSON.stringify(error));
+    }
+
+    setLoading(false);
+  }
+
+  /**
+   * Gets the currency label text to show on the UI.
+   *
+   * @return {string} The label.
+   */
+  function getCurrencyLabel() {
+    return currencyConfig.type === 'standard' ? currencyConfig.code :
+           currencyConfig.type === 'custom' ?
+           `${customCurrency.symbol} ${customCurrency.name}` : '';
+  }
+
+  /**
+   * Handles currency modal confirm click.
+   */
+  function onCurrencyModalConfirm(_currencyConfig, _customCurrency) {
+    setCurrencyConfig(_currencyConfig);
+    setCustomCurrency(_customCurrency);
+  }
+
+  /**
+   * Handles delete entries click event.
+   */
+  async function onDeleteEntriesClick() {
+    await clearEntries();
+    history.goBack();
+  }
+
   return (
-    <div
-      style={{margin: '0 1rem'}}
-    >
-      <Stack direction="column" spacing={3}>
-        <Typography level='h2'>Settings</Typography>
-        <Currency/>
-      </Stack>
-    </div>
+    <>
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/" color="dark"/>
+            </IonButtons>
+            <IonTitle>Settings</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+
+          {
+            error && (
+              <IonCard color="danger">
+                <IonCardContent>{error}</IonCardContent>
+              </IonCard>
+            )
+          }
+
+          <IonList>
+            <IonItem
+              aria-label="currency"
+              button={!loading}
+              onClick={() => openCurrencyModal(currencyConfig, customCurrency)}
+            >
+              <IonLabel>Currency</IonLabel>
+              <IonLabel slot="end">
+                {
+                  loading ?
+                    <IonSpinner name="dots"/> :
+                    getCurrencyLabel()
+                }
+              </IonLabel>
+            </IonItem>
+
+            <IonItem onClick={onDeleteEntriesClick}>
+              <IonLabel color="danger">Delete all entries</IonLabel>
+            </IonItem>
+          </IonList>
+
+        </IonContent>
+      </IonPage>
+
+      <CurrencyModal onConfirm={onCurrencyModalConfirm}/>
+    </>
   )
 }

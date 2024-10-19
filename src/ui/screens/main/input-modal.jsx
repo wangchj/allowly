@@ -12,6 +12,12 @@ import Typography from '@mui/joy/Typography';
 import currency from 'currency.js';
 import React, {useState} from 'react';
 import addEntry from 'modules/add-entry';
+import { getDecimalSymbol } from 'modules/currency';
+
+/**
+ * The decimal character of the current locale.
+ */
+const decimal = getDecimalSymbol() ?? '.';
 
 /**
  * The current entries passed in from the component that opened this model.
@@ -50,7 +56,7 @@ export function openInputModal(_entries) {
  * @param {function} onEntryAdded The callback function after a new entry has been added.
  */
 async function onButtonClick(sign, onEntryAdded) {
-  let intValue = currency(value).intValue * sign;
+  let intValue = currency(value, {precision: 4, decimal}).intValue * sign;
 
   if (intValue && typeof intValue === 'number') {
 
@@ -87,9 +93,10 @@ function onClose() {
 /**
  * The input modal UI component.
  *
+ * @param {string} symbol The currency symbol.
  * @param {function} onEntryAdded The callback function after a new entry has been added.
  */
-export default function InputModal({onEntryAdded}) {
+export default function InputModal({symbol, onEntryAdded}) {
   [value, setValue] = useState('');
   [open, setOpen] = useState(false);
   [error, setError] = useState();
@@ -102,7 +109,7 @@ export default function InputModal({onEntryAdded}) {
       <ModalDialog>
       <Stack spacing={2}>
         <div>
-          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <ModalClose variant="plain" sx={{ m: 1 }} aria-label="close"/>
           <Typography
             component="h2"
             id="modal-title"
@@ -120,8 +127,8 @@ export default function InputModal({onEntryAdded}) {
           <FormControl>
             <Input
               type="number"
-              inputmode="decimal"
-              startDecorator="$"
+              inputMode="decimal"
+              startDecorator={symbol}
               value={value}
               onChange={event => setValue(event.target.value)}
               autoFocus

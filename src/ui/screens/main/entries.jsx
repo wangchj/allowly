@@ -6,8 +6,10 @@ import Entry from './entry.jsx';
  * The UI component that shows the list of transaction entries.
  *
  * @param {array} entries The prop that contains the transaction entries.
+ * @param {object} currencyConfig The currency settings object.
+ * @param {object} customCurrency The custom currency settings object.
  */
-export default function Entries({entries}) {
+export default function Entries({entries, currencyConfig, customCurrency}) {
   return (
     <Table>
     <thead>
@@ -19,7 +21,16 @@ export default function Entries({entries}) {
     </thead>
 
       <tbody>
-        {entries.map((entry, index) => <Entry key={index} entry={entry}/>)}
+        {
+          entries.map((entry, index) => (
+            <Entry
+              key={index}
+              entry={entry}
+              currencyConfig={currencyConfig}
+              customCurrency={customCurrency}
+            />
+          ))
+        }
       </tbody>
     </Table>
   )

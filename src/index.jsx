@@ -1,37 +1,41 @@
+import './index.scss';
+import '@ionic/react/css/core.css';
+import '@ionic/react/css/normalize.css';
+import '@ionic/react/css/structure.css';
+import '@ionic/react/css/typography.css';
+import '@ionic/react/css/padding.css';
+import '@ionic/react/css/float-elements.css';
+import '@ionic/react/css/text-alignment.css';
+import '@ionic/react/css/text-transformation.css';
+import '@ionic/react/css/flex-utils.css';
+import '@ionic/react/css/display.css';
+import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonReactRouter } from '@ionic/react-router';
 import React from "react";
+import { Route } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import migrate from './migrations/2024-09-26.js';
-import RootLayout from "ui/layout/root-layout.jsx";
-import Currencies from "ui/screens/currencies";
+import migrate from 'modules/migrations.js';
 import Main from 'ui/screens/main';
 import Settings from "ui/screens/settings";
 
-const router = createBrowserRouter([
-  {
-    element: <RootLayout/>,
-    children: [
-      {
-        path: '/',
-        element: <Main/>
-      },
-      {
-        path: '/settings',
-        element: <Settings/>
-      },
-      {
-        path: '/currencies',
-        element: <Currencies/>
-      },
-    ]
-  }
-]);
-
 await migrate();
 
-
-// createRoot(document.getElementById('root')).render(<App/>);
+setupIonicReact({mode: 'ios'});
 
 createRoot(document.querySelector('#root')).render(
-  <RouterProvider router={router} />
+  <IonApp>
+    <IonReactRouter>
+      <IonRouterOutlet>
+        <Route path="/" exact={true}>
+          <Main/>
+        </Route>
+
+        <Route path="/settings" exact={true}>
+          <Settings/>
+        </Route>
+
+
+      </IonRouterOutlet>
+    </IonReactRouter>
+  </IonApp>
 );
