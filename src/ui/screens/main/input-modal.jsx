@@ -1,3 +1,22 @@
+import {
+  IonButton,
+  IonButtons,
+  IonCard,
+  IonCardContent,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonModal,
+  IonSelect,
+  IonSelectOption,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
+import { eye, lockClosed } from 'ionicons/icons';
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
 import Alert from '@mui/joy/Alert';
@@ -87,13 +106,64 @@ function onClose() {
 /**
  * The input modal UI component.
  *
- * @param {string} symbol The currency symbol.
  * @param {function} onEntryAdded The callback function after a new entry has been added.
  */
-export default function InputModal({symbol, onEntryAdded}) {
+export default function InputModal({onEntryAdded}) {
   [value, setValue] = useState('');
   [open, setOpen] = useState(false);
   [error, setError] = useState();
+
+  return (
+    <IonModal isOpen={open} onDidDismiss={() => setOpen(false)}>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Add entry</IonTitle>
+          <IonButtons slot="end">
+            <IonButton strong={true} onClick={onClose}>
+              Cancel
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        {
+          error && (
+            <IonCard color="danger">
+              <IonCardContent>{error}</IonCardContent>
+            </IonCard>
+          )
+        }
+
+
+        <div
+          style={{
+            // borderWidth: '10px',
+            // borderColor:"black",
+            // borderStyle: "solid",
+            height: '100%',
+            position: 'relative'
+          }}
+        >
+
+          <IonInput
+            value={value}
+            onIonInput={event => setValue(event.detail.value)}
+            autofocus
+            required
+            // slot="end"
+            start
+            style={{textAlign: 'center'}}
+          >
+            <IonIcon slot="start" icon={lockClosed} aria-hidden="true"></IonIcon>
+            </IonInput>
+          <div style={{position:'absolute', bottom: 'env(safe-area-inset-top, 0)'}}>
+            <Button>X</Button> <Button>Y</Button>
+          </div>
+        </div>
+      </IonContent>
+
+    </IonModal>
+  )
 
   return (
     <Modal
@@ -121,8 +191,8 @@ export default function InputModal({symbol, onEntryAdded}) {
           <FormControl>
             <Input
               type="number"
-              inputMode="decimal"
-              startDecorator={symbol}
+              inputmode="decimal"
+              startDecorator="$"
               value={value}
               onChange={event => setValue(event.target.value)}
               autoFocus
