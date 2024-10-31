@@ -115,41 +115,51 @@ export function getPrecision(code) {
 }
 
 /**
- * Formats stored currency value as a string using the currency config. Stored values are integers
- * with the lowest 4 digits representing the fractional portion.
- *
- * Example: 120000 -> $12.00
+ * Formats stored currency value as a string. Example: 120000 -> $12.00
  *
  * @param {integer} value The stored currency value to format, e.g., 120000.
  * @param {object} currencyConfig The currency settings object.
  * @param {object} customCurrency The custom currency settings object.
+ * @return {string} The formatted value without the currency symbol.
  */
 export function format(value, currencyConfig, customCurrency) {
-  return currencyConfig.type === 'custom' ?
-    formatCustom(value, customCurrency) :
-    formatStandard(value, currencyConfig);
-}
-
-export function formatStandard(value, currencyConfig) {
-  return Intl.NumberFormat(
+  const type = currencyConfig.type;
+  const code = type === 'custom' ? 'USD' : currencyConfig.code;
+  const symbol = getSymbol(code);
+  const scaled = currency(value, {fromCents: true, precision: 4});
+  const formatted = Intl.NumberFormat(
     undefined,
     {
       style: 'currency',
-      currency: currencyConfig.code
+      currency: code,
+      minimumFractionDigits: type === 'custom' ? customCurrency.precision : undefined,
+      maximumFractionDigits: type === 'custom' ? customCurrency.precision : undefined
     }
-  ).format(currency(value, {fromCents: true, precision: 4}));
+  ).format(scaled)
+
+  return formatted.replace(symbol, '').trim();
 }
 
-export function formatCustom(value, customCurrency) {
-  let symbol = getSymbol('USD');
-  let usd = Intl.NumberFormat(
-    undefined,
-    {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: customCurrency.precision,
-      maximumFractionDigits: customCurrency.precision
-    }
-  ).format(currency(value, {fromCents: true, precision: 4}));
-  return usd.replace(symbol, customCurrency.symbol);
-}
+// export function formatStandard(value, currencyConfig) {
+//   return Intl.NumberFormat(
+//     undefined,
+//     {
+//       style: 'currency',
+//       currency: currencyConfig.code
+//     }
+//   ).format(currency(value, {fromCents: true, precision: 4}));
+// }
+
+// export function formatCustom(value, customCurrency) {
+//   let symbol = getSymbol('USD');
+//   let usd = Intl.NumberFormat(
+//     undefined,
+//     {
+//       style: 'currency',
+//       currency: 'USD',
+//       minimumFractionDigits: customCurrency.precision,
+//       maximumFractionDigits: customCurrency.precision
+//     }
+//   ).format(currency(value, {fromCents: true, precision: 4}));
+//   return usd.replace(symbol, customCurrency.symbol);
+// }

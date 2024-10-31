@@ -25,7 +25,7 @@ export default function Total({entries, currencyConfig, customCurrency, onEntryA
   let symbolPlacement = getSymbolPlacement();
 
   // The total value as a string
-  let totalStr = format(Math.abs(total), currencyConfig, customCurrency).replace(symbol, '');
+  let totalStr = format(Math.abs(total), currencyConfig, customCurrency);
 
   // Is total negative?
   let negative = total < 0;
