@@ -1,4 +1,5 @@
 import {
+  IonAlert,
   IonBackButton,
   IonButtons,
   IonCard,
@@ -90,9 +91,9 @@ export default function Settings() {
   }
 
   /**
-   * Handles delete entries click event.
+   * Handles delete confirm event.
    */
-  async function onDeleteEntriesClick() {
+  async function onDeleteConfirm() {
     await clearEntries();
     history.goBack();
   }
@@ -134,7 +135,7 @@ export default function Settings() {
               </IonLabel>
             </IonItem>
 
-            <IonItem onClick={onDeleteEntriesClick}>
+            <IonItem id="delete">
               <IonLabel color="danger">Delete all entries</IonLabel>
             </IonItem>
           </IonList>
@@ -143,6 +144,22 @@ export default function Settings() {
       </IonPage>
 
       <CurrencyModal onConfirm={onCurrencyModalConfirm}/>
+
+      <IonAlert
+        trigger="delete"
+        header="Delete all entries?"
+        buttons={[
+          {
+            text: 'Cancel',
+            role: 'cancel'
+          },
+          {
+            text: 'Delete',
+            role: 'confirm',
+            handler: onDeleteConfirm
+          }
+        ]}
+      />
     </>
   )
 }
