@@ -8,4 +8,4 @@ The author of this app is not responsible of the accuracy or correctness of this
 
 We may update this Privacy Policy as the app evolves. Check this page for updates.
 
-By using Allow, you consent to this Privacy Policy.
+By using Allowly, you consent to this Privacy Policy.
